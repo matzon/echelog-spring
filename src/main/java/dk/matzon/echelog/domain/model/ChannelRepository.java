@@ -10,7 +10,7 @@ import java.util.List;
 public interface ChannelRepository {
     List<Channel> findAll(boolean includeArchived);
 
-    List<Channel> findByNetwork(String _network);
+    List<Channel> findByNetwork(Network _network);
 
-    Channel findByNetworkAndName(String _network, String _name);
+    Channel findByNetworkAndName(Network _network, String _name);
 }

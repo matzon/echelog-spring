@@ -2,15 +2,13 @@ package dk.matzon.echelog.interfaces.rest;
 
 import dk.matzon.echelog.application.Echelog;
 import dk.matzon.echelog.domain.model.Channel;
+import dk.matzon.echelog.domain.model.Network;
 import dk.matzon.echelog.interfaces.ChannelFacade;
 import dk.matzon.echelog.interfaces.assembler.ChannelAssembler;
 import dk.matzon.echelog.interfaces.dto.ChannelDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -45,6 +43,38 @@ public class ChannelController implements ChannelFacade {
             channels = echelog.getActiveChannels();
         } else {
             channels = echelog.getAllChannels();
+        }
+
+        if (!channels.isEmpty()) {
+            result = new ArrayList<>(ChannelAssembler.toDTO(channels));
+        }
+        return result;
+    }
+
+    @Override
+    @RequestMapping(path = "/channels/{name}", method = RequestMethod.GET)
+    public Collection<ChannelDTO> listChannelsByName(@PathVariable("name") String _name) {
+        List<ChannelDTO> result = new ArrayList<>();
+        List<Channel> allChannels = echelog.getAllChannels();
+        if(!allChannels.isEmpty()) {
+            for (Channel channel : allChannels) {
+                if(_name.equals(channel.getName())) {
+                    result.add(ChannelAssembler.toDTO(channel, null));
+                }
+            }
+        }
+        return result;
+    }
+
+    @Override
+    @RequestMapping(path = "/{network}/channels", method = RequestMethod.GET)
+    public Collection<ChannelDTO> listChannelsByNetwork(@PathVariable("network") String _network, boolean _onlyActive) {
+        List<ChannelDTO> result = new ArrayList<>();
+        List<Channel> channels = new ArrayList<>();
+
+        Network network = echelog.getNetwork(_network);
+        if(network != null) {
+            channels = network.getChannels(_onlyActive);
         }
 
         if (!channels.isEmpty()) {
