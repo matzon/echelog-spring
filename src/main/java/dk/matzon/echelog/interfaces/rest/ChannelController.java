@@ -6,7 +6,9 @@ import dk.matzon.echelog.interfaces.ChannelFacade;
 import dk.matzon.echelog.interfaces.assembler.ChannelAssembler;
 import dk.matzon.echelog.interfaces.dto.ChannelDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,6 +22,7 @@ import java.util.List;
  * @author Brian Matzon <brian@matzon.dk>
  */
 @RestController
+@RequestMapping(path = "/api", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
 public class ChannelController implements ChannelFacade {
 
     private Echelog echelog;
@@ -33,7 +36,7 @@ public class ChannelController implements ChannelFacade {
     }
 
     @Override
-    @RequestMapping("/channels")
+    @RequestMapping(path = "/channels", method = RequestMethod.GET)
     public Collection<ChannelDTO> listAllChannels(@RequestParam(value = "onlyActive", defaultValue = "false") boolean _onlyActive) {
         List<ChannelDTO> result = new ArrayList<>();
         List<Channel> channels;
