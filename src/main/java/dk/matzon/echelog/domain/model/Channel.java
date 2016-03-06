@@ -10,9 +10,7 @@ public class Channel implements Entity<Channel> {
   private String url;
 	 
     public Channel() {
-    }
-  
-  
+    }  
 
     @Override
     public boolean sameIdentityAs(Channel _channel) {
