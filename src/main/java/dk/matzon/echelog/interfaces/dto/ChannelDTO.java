@@ -1,18 +1,18 @@
 package dk.matzon.echelog.interfaces.dto;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * DTO for channels
+ * DTO for a Channel. A Channel DTO always have a weak NetworkDTO parent.
  *
  * @author Brian Matzon <brian@matzon.dk>
  */
+@JsonInclude(value = JsonInclude.Include.NON_NULL)
 public class ChannelDTO implements Serializable {
 
-    @JsonBackReference
     private NetworkDTO network;
     private String name;
     private String description;
@@ -20,12 +20,11 @@ public class ChannelDTO implements Serializable {
     private boolean archived;
 
     public ChannelDTO(NetworkDTO network, String name, String description, String url, boolean _archived) {
-        this.network = network;
+        this.network = new NetworkDTO(network.getName());
         this.name = name;
         this.description = description;
         this.url = url;
         this.archived = _archived;
-
     }
 
     public NetworkDTO getNetwork() {

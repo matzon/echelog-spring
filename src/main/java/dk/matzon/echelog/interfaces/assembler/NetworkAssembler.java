@@ -37,23 +37,24 @@ import java.util.Collection;
  * @author Brian Matzon <brian@matzon.dk>
  */
 public class NetworkAssembler {
-    public static NetworkDTO toDTO(Network _network) {
+    public static NetworkDTO toDTO(Network _network, boolean _full) {
         NetworkDTO result = new NetworkDTO(_network.getName(), new ArrayList<ChannelDTO>());
-        for (Channel channel : _network.getChannels(false)) {
-            ChannelDTO channelDTO = ChannelAssembler.toDTO(channel, result);
+        if (_full) {
+            for (Channel channel : _network.getChannels(false)) {
+                ChannelDTO channelDTO = ChannelAssembler.toDTO(channel, result);
 
-            /* add to network */
-            result.getChannels().add(channelDTO);
+                /* add to network */
+                result.getChannels().add(channelDTO);
+            }
         }
-
         return result;
     }
 
-    public static Collection<NetworkDTO> toDTO(Collection<Network> _networks) {
+    public static Collection<NetworkDTO> toDTO(Collection<Network> _networks, boolean _full) {
         ArrayList<NetworkDTO> result = new ArrayList<>();
 
         for (Network network : _networks) {
-            result.add(toDTO(network));
+            result.add(toDTO(network, _full));
         }
 
         return result;

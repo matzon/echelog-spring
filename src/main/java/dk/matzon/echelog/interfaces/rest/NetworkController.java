@@ -63,11 +63,11 @@ public class NetworkController implements NetworkFacade {
 
     @Override
     @RequestMapping(path = "/networks", method = RequestMethod.GET)
-    public Collection<NetworkDTO> listAllNetwork() {
+    public Collection<NetworkDTO> listAllNetwork(@RequestParam(value = "includeChannels", defaultValue = "false") boolean _includeChannels) {
         List<NetworkDTO> result = new ArrayList<>();
         List<Network> networks = echelog.getNetworks();
         if (!networks.isEmpty()) {
-            result = new ArrayList<>(NetworkAssembler.toDTO(networks));
+            result = new ArrayList<>(NetworkAssembler.toDTO(networks, _includeChannels));
         }
         return result;
     }
@@ -78,7 +78,7 @@ public class NetworkController implements NetworkFacade {
         NetworkDTO result = null;
         Network network = echelog.getNetwork(_network);
         if (network != null) {
-            result = NetworkAssembler.toDTO(network);
+            result = NetworkAssembler.toDTO(network, true);
         }
         return result;
     }

@@ -35,7 +35,7 @@ import java.util.Collection;
  * @author Brian Matzon <brian@matzon.dk>
  */
 public interface NetworkFacade {
-    Collection<NetworkDTO> listAllNetwork();
+    Collection<NetworkDTO> listAllNetwork(boolean _includeChannels);
 
     NetworkDTO findByName(String _network);
 }

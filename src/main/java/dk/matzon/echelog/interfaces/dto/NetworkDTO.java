@@ -25,22 +25,22 @@
 
 package dk.matzon.echelog.interfaces.dto;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
 /**
- * DTO for Network
+ * DTO for Network. A NetworkDTOs channels may be weak
  *
  * @author Brian Matzon <brian@matzon.dk>
  */
+@JsonInclude(value = JsonInclude.Include.NON_NULL)
 public class NetworkDTO implements Serializable {
 
     private String name;
 
-    @JsonManagedReference
     private List<ChannelDTO> channels;
 
     public NetworkDTO(String name) {
