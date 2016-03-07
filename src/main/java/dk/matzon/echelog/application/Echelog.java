@@ -4,7 +4,6 @@ import dk.matzon.echelog.domain.model.Channel;
 import dk.matzon.echelog.domain.model.ChannelRepository;
 import dk.matzon.echelog.domain.model.Network;
 import dk.matzon.echelog.domain.model.NetworkRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
@@ -16,7 +15,6 @@ public class Echelog {
     private NetworkRepository networkRepository;
     private ChannelRepository channelRepository;
 
-    @Autowired
     public Echelog(ChannelRepository _channelRepository, NetworkRepository _networkRepository) {
         this.channelRepository = _channelRepository;
         this.networkRepository = _networkRepository;

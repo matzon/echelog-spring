@@ -26,7 +26,7 @@
 package dk.matzon.echelog.interfaces.rest;
 
 import com.jayway.restassured.RestAssured;
-import dk.matzon.echelog.infrastructure.SpringBoot;
+import dk.matzon.echelog.infrastructure.spring.SpringBoot;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,6 +35,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.http.HttpStatus;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
@@ -47,6 +48,7 @@ import static com.jayway.restassured.RestAssured.when;
 @SpringApplicationConfiguration(classes = SpringBoot.class)
 @WebAppConfiguration
 @IntegrationTest("server.port:0")
+@ActiveProfiles("integrationtest")
 public class ChannelControllerTestIT {
 
     @Value("${local.server.port}")
@@ -60,9 +62,9 @@ public class ChannelControllerTestIT {
     @Test
     public void testListAllChannels() throws Exception {
         when().
-                get("/api/channels").
+            get("/api/channels").
         then().
-                statusCode(HttpStatus.OK.value()).
-                body("name", Matchers.hasItems("#angularjs", "#apache-ode"));
+            statusCode(HttpStatus.OK.value()).
+            body("name", Matchers.hasItems("#angularjs", "#apache-ode"));
     }
 }
