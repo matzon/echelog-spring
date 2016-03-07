@@ -48,7 +48,7 @@ public class Network implements Entity<Network> {
 
     public Network(String name, List<Channel> _channels) {
         this.name = name;
-        this.channels = _channels;
+        this.channels = (_channels == null) ? new ArrayList<Channel>() : _channels;
     }
 
     public String getName() {

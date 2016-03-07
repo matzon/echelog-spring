@@ -19,11 +19,11 @@ public class ChannelDTO implements Serializable {
     private String url;
     private boolean archived;
 
-    public ChannelDTO(NetworkDTO network, String name, String description, String url, boolean _archived) {
-        this.network = new NetworkDTO(network.getName());
-        this.name = name;
-        this.description = description;
-        this.url = url;
+    public ChannelDTO(NetworkDTO _network, String _name, String _description, String _url, boolean _archived) {
+        this.network = new NetworkDTO(_network.getName());
+        this.name = _name;
+        this.description = _description;
+        this.url = _url;
         this.archived = _archived;
     }
 

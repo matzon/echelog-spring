@@ -43,12 +43,12 @@ public class NetworkDTO implements Serializable {
 
     private List<ChannelDTO> channels;
 
-    public NetworkDTO(String name) {
-        this.name = name;
+    public NetworkDTO(String _name) {
+        this.name = _name;
     }
 
-    public NetworkDTO(String name, List<ChannelDTO> _channels) {
-        this.name = name;
+    public NetworkDTO(String _name, List<ChannelDTO> _channels) {
+        this.name = _name;
         this.channels = _channels;
     }
 
