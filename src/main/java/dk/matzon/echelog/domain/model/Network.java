@@ -27,9 +27,6 @@ package dk.matzon.echelog.domain.model;
 
 import se.citerus.dddsample.domain.shared.Entity;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -39,71 +36,57 @@ import java.util.Objects;
  */
 public class Network implements Entity<Network> {
 
+    private long id;
     private String name;
-
-    List<Channel> channels;
 
     public Network() {
     }
 
-    public Network(String name, List<Channel> _channels) {
-        this.name = name;
-        this.channels = (_channels == null) ? new ArrayList<Channel>() : _channels;
+    public Network(long _id, String _name) {
+        this.id = _id;
+        this.name = _name;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long _id) {
+        id = _id;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public List<Channel> getChannels() {
-        return getChannels(false);
-    }
-
-    public List<Channel> getChannels(boolean _onlyActive) {
-        ArrayList<Channel> filtered = new ArrayList<>(channels);
-        if (_onlyActive) {
-            Iterator<Channel> iterator = filtered.iterator();
-            while (iterator.hasNext()) {
-                if (iterator.next().isArchived()) {
-                    iterator.remove();
-                }
-            }
-        }
-        return filtered;
-    }
-
-    public void setChannels(List<Channel> channels) {
-        this.channels = channels;
+    public void setName(String _name) {
+        this.name = _name;
     }
 
     @Override
-    public boolean sameIdentityAs(Network _channel) {
-        return name.equals(_channel.name);
+    public boolean sameIdentityAs(Network _network) {
+        return id == _network.id;
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Network network = (Network) o;
-        return Objects.equals(name, network.name) &&
-                Objects.equals(channels, network.channels);
+    public boolean equals(Object _o) {
+        if (this == _o) return true;
+        if (_o == null || getClass() != _o.getClass()) return false;
+        Network network = (Network) _o;
+        return id == network.id &&
+                Objects.equals(name, network.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name);
+        return Objects.hash(id, name);
     }
 
     @Override
     public String toString() {
         return "Network{" +
-                "name='" + name + '\'' +
-                ", channels=" + channels +
+                "id=" + id +
+                ", name='" + name + '\'' +
                 '}';
     }
 }

@@ -27,8 +27,8 @@ package dk.matzon.echelog.infrastructure.spring.configuration;
 
 import dk.matzon.echelog.application.Echelog;
 import dk.matzon.echelog.domain.model.ChannelRepository;
+import dk.matzon.echelog.domain.model.EntryRepository;
 import dk.matzon.echelog.domain.model.NetworkRepository;
-import org.springframework.boot.SpringApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -42,7 +42,7 @@ public class ProductionConfiguration {
 
     @Bean
     public Echelog echelog() {
-        return new Echelog(channelRepository(), networkRepository());
+        return new Echelog(networkRepository(), channelRepository(), entryRepository());
     }
 
     @Bean
@@ -54,4 +54,10 @@ public class ProductionConfiguration {
     public NetworkRepository networkRepository() {
         return null;
     }
+
+    @Bean
+    public EntryRepository entryRepository() {
+        return null;
+    }
+
 }

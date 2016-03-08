@@ -27,6 +27,7 @@ package dk.matzon.echelog.interfaces.rest;
 
 import com.jayway.restassured.RestAssured;
 import dk.matzon.echelog.infrastructure.spring.SpringBoot;
+import dk.matzon.echelog.interfaces.dto.ChannelDTO;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,6 +40,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import static com.jayway.restassured.RestAssured.given;
+import static com.jayway.restassured.RestAssured.post;
 import static com.jayway.restassured.RestAssured.when;
 
 /**
@@ -57,6 +60,13 @@ public class ChannelControllerTestIT {
     @Before
     public void setUp() {
         RestAssured.port = port;
+        given()
+            .contentType("application/json")
+            .body("{\"id\": \"0\", \"name\": \"#angularjs\", \"description\": \"description\", \"url\": \"url\", \"archived\": \"false\"}".getBytes())
+        .expect()
+            .statusCode(200)
+        .when()
+            .post("/api/channels");
     }
 
     @Test
@@ -65,6 +75,6 @@ public class ChannelControllerTestIT {
             get("/api/channels").
         then().
             statusCode(HttpStatus.OK.value()).
-            body("name", Matchers.hasItems("#angularjs", "#apache-ode"));
+            body("name", Matchers.hasItems("#angularjs"));
     }
 }

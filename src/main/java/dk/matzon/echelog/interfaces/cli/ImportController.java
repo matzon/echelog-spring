@@ -23,43 +23,10 @@
  *
  */
 
-package dk.matzon.echelog.infrastructure.persistence.staticdata;
-
-import dk.matzon.echelog.domain.model.Channel;
-import dk.matzon.echelog.domain.model.Network;
-import dk.matzon.echelog.domain.model.NetworkRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+package dk.matzon.echelog.interfaces.cli;
 
 /**
- * @author Brian Matzon <brian@matzon.dk>
+ * Created by Brian Matzon on 08-03-2016.
  */
-@Repository
-public class StaticNetworkRepository implements NetworkRepository {
-
-    private Map<Network, List<Channel>> store;
-
-    @Autowired
-    public StaticNetworkRepository(MockData _data) {
-        this.store = _data.getStore();
-    }
-
-    @Override
-    public List<Network> findAll() {
-        return new ArrayList<>(store.keySet());
-    }
-
-    @Override
-    public Network findByName(String _name) {
-        for (Network network : store.keySet()) {
-            if (network.getName().equals(_name)) {
-                return network;
-            }
-        }
-        return null;
-    }
+public class ImportController {
 }

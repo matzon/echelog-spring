@@ -27,14 +27,18 @@ package dk.matzon.echelog.infrastructure.spring.configuration;
 
 import dk.matzon.echelog.application.Echelog;
 import dk.matzon.echelog.domain.model.ChannelRepository;
+import dk.matzon.echelog.domain.model.EntryRepository;
 import dk.matzon.echelog.domain.model.NetworkRepository;
-import dk.matzon.echelog.infrastructure.persistence.staticdata.MockData;
-import dk.matzon.echelog.infrastructure.persistence.staticdata.StaticChannelRepository;
-import dk.matzon.echelog.infrastructure.persistence.staticdata.StaticNetworkRepository;
-import org.springframework.boot.SpringApplication;
+import dk.matzon.echelog.infrastructure.hibernate.HibernateChannelRepository;
+import dk.matzon.echelog.infrastructure.hibernate.HibernateEntryRepository;
+import dk.matzon.echelog.infrastructure.hibernate.HibernateNetworkRepository;
+import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.orm.hibernate4.HibernateTransactionManager;
+import org.springframework.orm.jpa.LocalEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaSessionFactoryBean;
 
 /**
  * @author Brian Matzon <brian@matzon.dk>
@@ -45,21 +49,41 @@ public class TestConfiguration {
 
     @Bean
     public Echelog echelog() {
-        return new Echelog(channelRepository(), networkRepository());
+        return new Echelog(networkRepository(), channelRepository(), entryRepository());
     }
 
     @Bean
     public ChannelRepository channelRepository() {
-        return new StaticChannelRepository(mockData());
+        return new HibernateChannelRepository(sessionFactory().getObject());
     }
 
     @Bean
     public NetworkRepository networkRepository() {
-        return new StaticNetworkRepository(mockData());
+        return new HibernateNetworkRepository(sessionFactory().getObject());
     }
 
     @Bean
-    public MockData mockData() {
-        return new MockData();
+    public EntryRepository entryRepository() {
+        return new HibernateEntryRepository(sessionFactory().getObject());
+    }
+
+    @Bean
+    public LocalEntityManagerFactoryBean entityManagerFactory() {
+        LocalEntityManagerFactoryBean factoryBean = new LocalEntityManagerFactoryBean();
+        factoryBean.setPersistenceProvider(new HibernatePersistenceProvider());
+        factoryBean.setPersistenceUnitName("echelog");
+        return factoryBean;
+    }
+
+    @Bean
+    public HibernateTransactionManager transactionManager() {
+        HibernateTransactionManager transactionManager = new HibernateTransactionManager();
+        transactionManager.setSessionFactory(sessionFactory().getObject());
+        return transactionManager;
+    }
+
+    @Bean
+    public HibernateJpaSessionFactoryBean sessionFactory() {
+        return new HibernateJpaSessionFactoryBean();
     }
 }

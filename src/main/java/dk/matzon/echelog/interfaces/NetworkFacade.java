@@ -38,4 +38,6 @@ public interface NetworkFacade {
     Collection<NetworkDTO> listAllNetwork(boolean _includeChannels);
 
     NetworkDTO findByName(String _network);
+
+    NetworkDTO save(NetworkDTO _networkDTO);
 }

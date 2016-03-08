@@ -13,4 +13,6 @@ public interface ChannelRepository {
     List<Channel> findByNetwork(Network _network);
 
     Channel findByNetworkAndName(Network _network, String _name);
+
+    Channel save(Channel _channel);
 }

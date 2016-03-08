@@ -11,7 +11,7 @@ import java.util.Objects;
  */
 public class Channel implements Entity<Channel> {
 
-    private Network network;
+    private long id;
     private String name;
     private String description;
     private String url;
@@ -20,49 +20,66 @@ public class Channel implements Entity<Channel> {
     public Channel() {
     }
 
-    public Channel(Network network, String name, String description, String url, boolean _archived) {
-        this.network = network;
-        this.name = name;
-        this.description = description;
-        this.url = url;
-        this.archived = _archived;
+    public Channel(long _id, String _name, String _description, String _url, boolean _archived) {
+        id = _id;
+        name = _name;
+        description = _description;
+        url = _url;
+        archived = _archived;
     }
 
-    public Network getNetwork() {
-        return network;
+    public long getId() {
+        return id;
     }
 
-    public void setNetwork(Network network) {
-        this.network = network;
+    public void setId(long _id) {
+        id = _id;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setName(String _name) {
+        name = _name;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setDescription(String _description) {
+        description = _description;
     }
 
     public String getUrl() {
         return url;
     }
 
+    public void setUrl(String _url) {
+        url = _url;
+    }
+
+    public boolean isArchived() {
+        return archived;
+    }
+
+    public void setArchived(boolean _archived) {
+        archived = _archived;
+    }
+
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Channel channel = (Channel) o;
-        return archived == channel.archived &&
-                Objects.equals(network, channel.network) &&
+    public boolean sameIdentityAs(Channel _channel) {
+        return id == _channel.id;
+    }
+
+    @Override
+    public boolean equals(Object _o) {
+        if (this == _o) return true;
+        if (_o == null || getClass() != _o.getClass()) return false;
+        Channel channel = (Channel) _o;
+        return id == channel.id &&
+                archived == channel.archived &&
                 Objects.equals(name, channel.name) &&
                 Objects.equals(description, channel.description) &&
                 Objects.equals(url, channel.url);
@@ -70,30 +87,14 @@ public class Channel implements Entity<Channel> {
 
     @Override
     public int hashCode() {
-        return Objects.hash(network, name, description, url, archived);
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public boolean isArchived() {
-        return archived;
-    }
-
-    public void setArchived(boolean archived) {
-        this.archived = archived;
-    }
-
-    @Override
-    public boolean sameIdentityAs(Channel _channel) {
-        return network.equals(_channel.network) && name.equals(_channel.name);
+        return Objects.hash(id, name, description, url, archived);
     }
 
     @Override
     public String toString() {
         return "Channel{" +
-                "name='" + name + '\'' +
+                "id=" + id +
+                ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", url='" + url + '\'' +
                 ", archived=" + archived +

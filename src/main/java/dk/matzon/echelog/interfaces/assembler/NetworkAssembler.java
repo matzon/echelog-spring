@@ -25,9 +25,7 @@
 
 package dk.matzon.echelog.interfaces.assembler;
 
-import dk.matzon.echelog.domain.model.Channel;
 import dk.matzon.echelog.domain.model.Network;
-import dk.matzon.echelog.interfaces.dto.ChannelDTO;
 import dk.matzon.echelog.interfaces.dto.NetworkDTO;
 
 import java.util.ArrayList;
@@ -37,16 +35,8 @@ import java.util.Collection;
  * @author Brian Matzon <brian@matzon.dk>
  */
 public class NetworkAssembler {
-    public static NetworkDTO toDTO(Network _network, boolean _full) {
-        NetworkDTO result = new NetworkDTO(_network.getName(), new ArrayList<ChannelDTO>());
-        if (_full) {
-            for (Channel channel : _network.getChannels(false)) {
-                ChannelDTO channelDTO = ChannelAssembler.toDTO(channel, result);
-
-                /* add to network */
-                result.getChannels().add(channelDTO);
-            }
-        }
+    public static NetworkDTO toDTO(Network _network) {
+        NetworkDTO result = new NetworkDTO(_network.getId(), _network.getName());
         return result;
     }
 
@@ -54,9 +44,13 @@ public class NetworkAssembler {
         ArrayList<NetworkDTO> result = new ArrayList<>();
 
         for (Network network : _networks) {
-            result.add(toDTO(network, _full));
+            result.add(toDTO(network));
         }
 
         return result;
+    }
+
+    public static Network fromDTO(NetworkDTO _networkDTO) {
+        return new Network(_networkDTO.getId(), _networkDTO.getName());
     }
 }

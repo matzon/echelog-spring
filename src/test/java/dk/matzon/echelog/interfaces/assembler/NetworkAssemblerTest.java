@@ -25,16 +25,11 @@
 
 package dk.matzon.echelog.interfaces.assembler;
 
-import dk.matzon.echelog.domain.model.Channel;
 import dk.matzon.echelog.domain.model.Network;
 import dk.matzon.echelog.interfaces.dto.NetworkDTO;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Brian Matzon <brian@matzon.dk>
@@ -42,55 +37,9 @@ import static org.junit.Assert.*;
 public class NetworkAssemblerTest {
     @Test
     public void testSingleNetworkNoChannelsSerialized() throws Exception {
-        Network network = new Network("networkname", null);
-        NetworkDTO networkDTO = NetworkAssembler.toDTO(network, false);
+        Network network = new Network(1, "networkname");
+        NetworkDTO networkDTO = NetworkAssembler.toDTO(network);
 
         assertEquals(network.getName(), networkDTO.getName());
-    }
-
-    @Test
-    public void testSingleNetworkNoChannelsSerializedFull() throws Exception {
-        Network network = new Network("networkname", null);
-        NetworkDTO networkDTO = NetworkAssembler.toDTO(network, true);
-
-        assertEquals(network.getName(), networkDTO.getName());
-    }
-
-    @Test
-    public void testSingleNetworkWithChannelsSerialized() throws Exception {
-        ArrayList<Channel> channels = new ArrayList<>();
-        channels.add(new Channel(null, "channelname", "description", "url", false));
-        Network network = new Network("networkname", channels);
-        channels.get(0).setNetwork(network);
-
-        NetworkDTO networkDTO = NetworkAssembler.toDTO(network, false);
-
-        assertEquals(network.getName(), networkDTO.getName());
-        assertEquals(0, networkDTO.getChannels().size());
-    }
-
-    @Test
-    public void testSingleNetworkWithChannelsSerializedFull() throws Exception {
-        ArrayList<Channel> channels = new ArrayList<>();
-        channels.add(new Channel(null, "channelname", "description", "url", false));
-        Network network = new Network("networkname", channels);
-        channels.get(0).setNetwork(network);
-
-        NetworkDTO networkDTO = NetworkAssembler.toDTO(network, true);
-
-        assertEquals(network.getName(), networkDTO.getName());
-        assertEquals(channels.size(), networkDTO.getChannels().size());
-    }
-
-    @Test
-    public void testCollectionNetworkNoChannelsSerialized() throws Exception {
-        List<Network> networkList = new ArrayList<>();
-        networkList.add(new Network("networkname-1", null));
-        networkList.add(new Network("networkname-2", null));
-
-        List<NetworkDTO> networkDTOs = new ArrayList<>(NetworkAssembler.toDTO(networkList, false));
-
-        assertEquals(networkList.size(), networkDTOs.size());
-        assertEquals(networkList.get(0).getName(), networkDTOs.get(0).getName());
     }
 }

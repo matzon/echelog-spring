@@ -26,9 +26,7 @@
 package dk.matzon.echelog.interfaces.assembler;
 
 import dk.matzon.echelog.domain.model.Channel;
-import dk.matzon.echelog.domain.model.Network;
 import dk.matzon.echelog.interfaces.dto.ChannelDTO;
-import dk.matzon.echelog.interfaces.dto.NetworkDTO;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -43,8 +41,8 @@ public class ChannelAssemblerTest {
 
     @Test
     public void testSingleChannelSerialized() throws Exception {
-        Channel channel = new Channel(new Network("networkname", null), "channelname", "description", "url", false);
-        ChannelDTO channelDTO = ChannelAssembler.toDTO(channel, new NetworkDTO(channel.getNetwork().getName()));
+        Channel channel = new Channel(1, "channelname", "description", "url", false);
+        ChannelDTO channelDTO = ChannelAssembler.toDTO(channel);
 
         assertEquals(channel.getName(), channelDTO.getName());
         assertEquals(channel.getDescription(), channelDTO.getDescription());
@@ -54,10 +52,9 @@ public class ChannelAssemblerTest {
 
     @Test
     public void testCollectionChannelSerialized() throws Exception {
-        Network network = new Network("networkname", null);
         List<Channel> channelList = new ArrayList<>();
-        channelList.add(new Channel(network, "channelname-1", "description", "url", false));
-        channelList.add(new Channel(network, "channelname-2", "description", "url", false));
+        channelList.add(new Channel(1, "channelname-1", "description", "url", false));
+        channelList.add(new Channel(2, "channelname-2", "description", "url", false));
         List<ChannelDTO> channelDTOs = new ArrayList<>(ChannelAssembler.toDTO(channelList));
 
         assertEquals(channelList.size(), channelDTOs.size());

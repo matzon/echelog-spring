@@ -23,61 +23,63 @@
  *
  */
 
-package dk.matzon.echelog.infrastructure.persistence.staticdata;
+package dk.matzon.echelog.infrastructure.hibernate;
 
 import dk.matzon.echelog.domain.model.Channel;
 import dk.matzon.echelog.domain.model.ChannelRepository;
 import dk.matzon.echelog.domain.model.Network;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
+import dk.matzon.echelog.domain.model.NetworkRepository;
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Brian Matzon <brian@matzon.dk>
  */
-@Repository
-public class StaticChannelRepository implements ChannelRepository {
+@SuppressWarnings("unchecked")
+public class HibernateChannelRepository implements ChannelRepository {
 
-    private Map<Network, List<Channel>> store;
+    private SessionFactory sessionFactory;
 
-    @Autowired
-    public StaticChannelRepository(MockData _data) {
-        this.store = _data.getStore();
+    public HibernateChannelRepository(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
 
     @Override
     public List<Channel> findAll(boolean includeArchived) {
-        List<Channel> result = new ArrayList<>();
-        for (List<Channel> channels : store.values()) {
-            result.addAll(channels);
-        }
-        return result;
+        Session currentSession = sessionFactory.getCurrentSession();
+        Criteria criteria = currentSession.createCriteria(Channel.class);
+        return (List<Channel>) criteria.list();
     }
 
     @Override
     public List<Channel> findByNetwork(Network _network) {
-        List<Channel> result = new ArrayList<>();
-        if (store.containsKey(_network)) {
-            result.addAll(store.get(_network));
-        }
-        return result;
+        Session currentSession = sessionFactory.getCurrentSession();
+        Criteria criteria = currentSession.createCriteria(Channel.class);
+        criteria.add(Restrictions.eq("network", _network.getName()));
+        return criteria.list();
     }
 
     @Override
     public Channel findByNetworkAndName(Network _network, String _name) {
-        Channel result = null;
-        if (store.containsKey(_network)) {
-            List<Channel> channels = store.get(_network);
-            for (Channel channel : channels) {
-                if (_name.equals(channel.getName())) {
-                    result = channel;
-                    break;
-                }
-            }
+        Session currentSession = sessionFactory.getCurrentSession();
+        Criteria criteria = currentSession.createCriteria(Channel.class);
+        criteria.add(Restrictions.eq("network", _network.getName()))
+                .add(Restrictions.eq("name", _name));
+        List<Channel> list = criteria.list();
+        if (list.size() > 0) {
+            return list.get(0);
         }
-        return result;
+        return null;
+    }
+
+    @Override
+    public Channel save(Channel _channel) {
+        Session currentSession = sessionFactory.getCurrentSession();
+        currentSession.saveOrUpdate(_channel);
+        return _channel;
     }
 }

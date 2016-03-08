@@ -23,59 +23,37 @@
  *
  */
 
-package dk.matzon.echelog.interfaces.dto;
+package dk.matzon.echelog.infrastructure.hibernate;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
+import dk.matzon.echelog.domain.model.*;
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 
-import java.io.Serializable;
-import java.util.Objects;
+import java.util.Date;
+import java.util.List;
 
 /**
- * DTO for Network. A NetworkDTOs channels may be weak
- *
- * @author Brian Matzon <brian@matzon.dk>
+ * Created by Brian Matzon on 07-03-2016.
  */
-@JsonInclude(value = JsonInclude.Include.NON_NULL)
-public class NetworkDTO implements Serializable {
+@SuppressWarnings("unchecked")
+public class HibernateEntryRepository implements EntryRepository {
 
-    private long id;
-    private String name;
+    private SessionFactory sessionFactory;
 
-    public NetworkDTO() {
-    }
-
-    public NetworkDTO(long _id, String _name) {
-        this.id = _id;
-        this.name = _name;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public long getId() {
-        return id;
+    public HibernateEntryRepository(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
 
     @Override
-    public boolean equals(Object _o) {
-        if (this == _o) return true;
-        if (_o == null || getClass() != _o.getClass()) return false;
-        NetworkDTO that = (NetworkDTO) _o;
-        return id == that.id &&
-                Objects.equals(name, that.name);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name);
-    }
-
-    @Override
-    public String toString() {
-        return "NetworkDTO{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
+    public List<Entry> findAll(Network _network, Channel _channel, Date _start, Date _end) {
+        Session currentSession = sessionFactory.getCurrentSession();
+        Criteria criteria = currentSession.createCriteria(Entry.class);
+        criteria.add(Restrictions.eq("network", _network.getName()));
+        criteria.add(Restrictions.eq("channel", _network.getName()));
+        criteria.add(Restrictions.gt("date", _start));
+        criteria.add(Restrictions.lt("date", _end));
+        return criteria.list();
     }
 }

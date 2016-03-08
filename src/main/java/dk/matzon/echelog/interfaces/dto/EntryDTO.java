@@ -25,57 +25,67 @@
 
 package dk.matzon.echelog.interfaces.dto;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-
-import java.io.Serializable;
+import java.util.Date;
 import java.util.Objects;
 
 /**
- * DTO for Network. A NetworkDTOs channels may be weak
- *
  * @author Brian Matzon <brian@matzon.dk>
  */
-@JsonInclude(value = JsonInclude.Include.NON_NULL)
-public class NetworkDTO implements Serializable {
-
+public class EntryDTO {
     private long id;
-    private String name;
+    private Date date;
+    private String text;
+    private String type;
 
-    public NetworkDTO() {
+    public EntryDTO() {
     }
 
-    public NetworkDTO(long _id, String _name) {
-        this.id = _id;
-        this.name = _name;
-    }
-
-    public String getName() {
-        return name;
+    public EntryDTO(long _id, Date _date, String _text, String _type) {
+        id = _id;
+        date = _date;
+        text = _text;
+        type = _type;
     }
 
     public long getId() {
         return id;
     }
 
+    public Date getDate() {
+        return date;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public String getType() {
+        return type;
+    }
+
     @Override
     public boolean equals(Object _o) {
         if (this == _o) return true;
         if (_o == null || getClass() != _o.getClass()) return false;
-        NetworkDTO that = (NetworkDTO) _o;
-        return id == that.id &&
-                Objects.equals(name, that.name);
+        EntryDTO entryDTO = (EntryDTO) _o;
+        return id == entryDTO.id &&
+                Objects.equals(date, entryDTO.date) &&
+                Objects.equals(text, entryDTO.text) &&
+                Objects.equals(type, entryDTO.type);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name);
+        return Objects.hash(id, date, text, type);
     }
 
     @Override
     public String toString() {
-        return "NetworkDTO{" +
+        return "EntryDTO{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
+                ", date=" + date +
+                ", text='" + text + '\'' +
+                ", type='" + type + '\'' +
                 '}';
     }
 }

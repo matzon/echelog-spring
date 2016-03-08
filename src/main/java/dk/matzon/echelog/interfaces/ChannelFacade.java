@@ -13,4 +13,5 @@ public interface ChannelFacade {
     Collection<ChannelDTO> listAllChannels(boolean _onlyActive);
     Collection<ChannelDTO> listChannelsByName(String _name);
     Collection<ChannelDTO> listChannelsByNetwork(String _network, boolean _onlyActive);
+    ChannelDTO save(ChannelDTO _channelDTO);
 }

@@ -23,59 +23,21 @@
  *
  */
 
-package dk.matzon.echelog.interfaces.dto;
+package dk.matzon.echelog.interfaces;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
+import dk.matzon.echelog.interfaces.dto.ChannelDTO;
+import dk.matzon.echelog.interfaces.dto.EntryDTO;
+import dk.matzon.echelog.interfaces.dto.NetworkDTO;
 
-import java.io.Serializable;
-import java.util.Objects;
+import java.util.List;
 
 /**
- * DTO for Network. A NetworkDTOs channels may be weak
- *
  * @author Brian Matzon <brian@matzon.dk>
  */
-@JsonInclude(value = JsonInclude.Include.NON_NULL)
-public class NetworkDTO implements Serializable {
+public interface ImportFacade {
+    void addNetwork(NetworkDTO _network);
 
-    private long id;
-    private String name;
+    void addChannel(NetworkDTO _parent, ChannelDTO _channel);
 
-    public NetworkDTO() {
-    }
-
-    public NetworkDTO(long _id, String _name) {
-        this.id = _id;
-        this.name = _name;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    @Override
-    public boolean equals(Object _o) {
-        if (this == _o) return true;
-        if (_o == null || getClass() != _o.getClass()) return false;
-        NetworkDTO that = (NetworkDTO) _o;
-        return id == that.id &&
-                Objects.equals(name, that.name);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name);
-    }
-
-    @Override
-    public String toString() {
-        return "NetworkDTO{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
-    }
+    void addLogs(ChannelDTO _channel, List<EntryDTO> _entries);
 }

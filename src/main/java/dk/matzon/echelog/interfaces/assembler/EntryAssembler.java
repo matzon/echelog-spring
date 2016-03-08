@@ -23,59 +23,33 @@
  *
  */
 
-package dk.matzon.echelog.interfaces.dto;
+package dk.matzon.echelog.interfaces.assembler;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
+import dk.matzon.echelog.domain.model.Entry;
+import dk.matzon.echelog.interfaces.dto.EntryDTO;
 
-import java.io.Serializable;
-import java.util.Objects;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
- * DTO for Network. A NetworkDTOs channels may be weak
- *
  * @author Brian Matzon <brian@matzon.dk>
  */
-@JsonInclude(value = JsonInclude.Include.NON_NULL)
-public class NetworkDTO implements Serializable {
-
-    private long id;
-    private String name;
-
-    public NetworkDTO() {
+public class EntryAssembler {
+    /**
+     * Assemble an Entry to EntryDTO
+     */
+    public static EntryDTO toDTO(Entry _entry) {
+        return new EntryDTO(_entry.getId(), _entry.getDate(), _entry.getText(), _entry.getType().name());
     }
 
-    public NetworkDTO(long _id, String _name) {
-        this.id = _id;
-        this.name = _name;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    @Override
-    public boolean equals(Object _o) {
-        if (this == _o) return true;
-        if (_o == null || getClass() != _o.getClass()) return false;
-        NetworkDTO that = (NetworkDTO) _o;
-        return id == that.id &&
-                Objects.equals(name, that.name);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name);
-    }
-
-    @Override
-    public String toString() {
-        return "NetworkDTO{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
+    /**
+     * Assemble a collection of Channel to ChannelDTO
+     */
+    public static Collection<EntryDTO> toDTO(Collection<Entry> _entries) {
+        ArrayList<EntryDTO> result = new ArrayList<>();
+        for (Entry entry : _entries) {
+            result.add(toDTO(entry));
+        }
+        return result;
     }
 }

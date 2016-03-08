@@ -36,4 +36,6 @@ public interface NetworkRepository {
     List<Network> findAll();
 
     Network findByName(String _name);
+
+    Network save(Network _network);
 }

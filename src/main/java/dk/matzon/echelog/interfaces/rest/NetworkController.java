@@ -26,13 +26,9 @@
 package dk.matzon.echelog.interfaces.rest;
 
 import dk.matzon.echelog.application.Echelog;
-import dk.matzon.echelog.domain.model.Channel;
 import dk.matzon.echelog.domain.model.Network;
-import dk.matzon.echelog.interfaces.ChannelFacade;
 import dk.matzon.echelog.interfaces.NetworkFacade;
-import dk.matzon.echelog.interfaces.assembler.ChannelAssembler;
 import dk.matzon.echelog.interfaces.assembler.NetworkAssembler;
-import dk.matzon.echelog.interfaces.dto.ChannelDTO;
 import dk.matzon.echelog.interfaces.dto.NetworkDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -78,8 +74,16 @@ public class NetworkController implements NetworkFacade {
         NetworkDTO result = null;
         Network network = echelog.getNetwork(_network);
         if (network != null) {
-            result = NetworkAssembler.toDTO(network, true);
+            result = NetworkAssembler.toDTO(network);
         }
         return result;
+    }
+
+    @Override
+    @RequestMapping(path = "/networks", method = {RequestMethod.POST, RequestMethod.PUT})
+    public NetworkDTO save(@RequestBody NetworkDTO _networkDTO) {
+        Network network = NetworkAssembler.fromDTO(_networkDTO);
+        network = echelog.addNetwork(network);
+        return NetworkAssembler.toDTO(network);
     }
 }

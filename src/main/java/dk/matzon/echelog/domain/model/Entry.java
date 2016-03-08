@@ -23,59 +23,98 @@
  *
  */
 
-package dk.matzon.echelog.interfaces.dto;
+package dk.matzon.echelog.domain.model;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
+import se.citerus.dddsample.domain.shared.Entity;
 
-import java.io.Serializable;
+import java.util.Date;
 import java.util.Objects;
 
 /**
- * DTO for Network. A NetworkDTOs channels may be weak
- *
  * @author Brian Matzon <brian@matzon.dk>
  */
-@JsonInclude(value = JsonInclude.Include.NON_NULL)
-public class NetworkDTO implements Serializable {
+public class Entry implements Entity<Entry> {
+
+    public enum Type {
+        CONTROL,
+        CHAT
+    }
 
     private long id;
-    private String name;
+    private Date date;
+    private String text;
+    private Type type;
 
-    public NetworkDTO() {
+    public Entry() {
     }
 
-    public NetworkDTO(long _id, String _name) {
-        this.id = _id;
-        this.name = _name;
-    }
-
-    public String getName() {
-        return name;
+    public Entry(long _id, Date _date, String _text, Type _type) {
+        id = _id;
+        date = _date;
+        text = _text;
+        type = _type;
     }
 
     public long getId() {
         return id;
     }
 
+    public void setId(long _id) {
+        id = _id;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date _date) {
+        date = _date;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String _text) {
+        text = _text;
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public void setType(Type _type) {
+        type = _type;
+    }
+
+    @Override
+    public boolean sameIdentityAs(Entry _other) {
+        return id == _other.id;
+    }
+
     @Override
     public boolean equals(Object _o) {
         if (this == _o) return true;
         if (_o == null || getClass() != _o.getClass()) return false;
-        NetworkDTO that = (NetworkDTO) _o;
-        return id == that.id &&
-                Objects.equals(name, that.name);
+        Entry entry = (Entry) _o;
+        return id == entry.id &&
+                Objects.equals(date, entry.date) &&
+                Objects.equals(text, entry.text) &&
+                type == entry.type;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name);
+        return Objects.hash(id, date, text, type);
     }
 
     @Override
     public String toString() {
-        return "NetworkDTO{" +
+        return "Entry{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
+                ", date=" + date +
+                ", text='" + text + '\'' +
+                ", type=" + type +
                 '}';
     }
 }

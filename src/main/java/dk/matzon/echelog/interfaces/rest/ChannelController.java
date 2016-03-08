@@ -59,7 +59,7 @@ public class ChannelController implements ChannelFacade {
         if(!allChannels.isEmpty()) {
             for (Channel channel : allChannels) {
                 if(_name.equals(channel.getName())) {
-                    result.add(ChannelAssembler.toDTO(channel, null));
+                    result.add(ChannelAssembler.toDTO(channel));
                 }
             }
         }
@@ -73,13 +73,19 @@ public class ChannelController implements ChannelFacade {
         List<Channel> channels = new ArrayList<>();
 
         Network network = echelog.getNetwork(_network);
-        if(network != null) {
-            channels = network.getChannels(_onlyActive);
-        }
+        channels = echelog.getChannelsForNetwork(network);
 
         if (!channels.isEmpty()) {
             result = new ArrayList<>(ChannelAssembler.toDTO(channels));
         }
         return result;
+    }
+
+    @Override
+    @RequestMapping(path = "/channels", method = {RequestMethod.POST, RequestMethod.PUT})
+    public ChannelDTO save(@RequestBody ChannelDTO _channelDTO) {
+        Channel channel = ChannelAssembler.fromDTO(_channelDTO);
+        channel = echelog.addChannel(channel);
+        return ChannelAssembler.toDTO(channel);
     }
 }

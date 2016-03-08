@@ -13,22 +13,25 @@ import java.util.Objects;
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 public class ChannelDTO implements Serializable {
 
-    private NetworkDTO network;
+    private long id;
     private String name;
     private String description;
     private String url;
     private boolean archived;
 
-    public ChannelDTO(NetworkDTO _network, String _name, String _description, String _url, boolean _archived) {
-        this.network = new NetworkDTO(_network.getName());
-        this.name = _name;
-        this.description = _description;
-        this.url = _url;
-        this.archived = _archived;
+    public ChannelDTO() {
     }
 
-    public NetworkDTO getNetwork() {
-        return network;
+    public ChannelDTO(long _id, String _name, String _description, String _url, boolean _archived) {
+        id = _id;
+        name = _name;
+        description = _description;
+        url = _url;
+        archived = _archived;
+    }
+
+    public long getId() {
+        return id;
     }
 
     public String getName() {
@@ -48,12 +51,12 @@ public class ChannelDTO implements Serializable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ChannelDTO that = (ChannelDTO) o;
-        return archived == that.archived &&
-                Objects.equals(network, that.network) &&
+    public boolean equals(Object _o) {
+        if (this == _o) return true;
+        if (_o == null || getClass() != _o.getClass()) return false;
+        ChannelDTO that = (ChannelDTO) _o;
+        return id == that.id &&
+                archived == that.archived &&
                 Objects.equals(name, that.name) &&
                 Objects.equals(description, that.description) &&
                 Objects.equals(url, that.url);
@@ -61,13 +64,13 @@ public class ChannelDTO implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(network, name, description, url, archived);
+        return Objects.hash(id, name, description, url, archived);
     }
 
     @Override
     public String toString() {
         return "ChannelDTO{" +
-                "network='" + network + '\'' +
+                "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", url='" + url + '\'' +
