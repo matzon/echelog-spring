@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ The MIT License (MIT)
+  ~
+  ~ Copyright (c) 2016 Brian Matzon
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy
+  ~ of this software and associated documentation files (the "Software"), to deal
+  ~ in the Software without restriction, including without limitation the rights
+  ~ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  ~ copies of the Software, and to permit persons to whom the Software is
+  ~ furnished to do so, subject to the following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all
+  ~ copies or substantial portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  ~ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  ~ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  ~ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  ~ SOFTWARE.
+  ~
+  -->
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="dk.matzon.echelog.domain.model.Network" table="TBLNETWORKS">
+        <id name="id" type="long" column="id">
+            <generator class="native"/>
+        </id>
+        <property name="name" column="name" type="string" length="64"/>
+    </class>
+
+    <class name="dk.matzon.echelog.domain.model.Channel" table="TBLCHANNELS">
+        <id name="id" type="long" column="id">
+            <generator class="native"/>
+        </id>
+        <property name="name" column="name" type="string" length="64"/>
+        <property name="description" column="description" type="string"/>
+        <property name="url" column="url" type="string"/>
+        <property name="archived" column="archived" type="boolean"/>
+    </class>
+
+    <class name="dk.matzon.echelog.domain.model.Entry" table="TBLENTRIES">
+        <id name="id" type="long" column="id">
+            <generator class="native"/>
+        </id>
+        <property name="date" column="date" type="timestamp"/>
+        <property name="text" column="text" type="string" length="4096"/>
+        <property name="type" column="type" type="string" length="16"/>
+    </class>
+
+</hibernate-mapping>

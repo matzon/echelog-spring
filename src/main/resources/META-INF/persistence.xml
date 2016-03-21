@@ -30,26 +30,5 @@
     <persistence-unit name="echelog">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <mapping-file>echelog.hbm.xml</mapping-file>
-        <properties>
-            <property name="javax.persistence.jdbc.driver" value="org.hsqldb.jdbcDriver"/>
-            <property name="javax.persistence.jdbc.url" value="jdbc:hsqldb:mem:echelog;hsqldb.tx=mvcc"/>
-            <!--<property name="javax.persistence.jdbc.url" value="jdbc:hsqldb:hsql://localhost/echelog;hsqldb.tx=mvcc"/>-->
-            <property name="javax.persistence.jdbc.user" value="sa"/>
-            <property name="javax.persistence.jdbc.password" value=""/>
-            <property name="hibernate.current_session_context_class" value="org.springframework.orm.hibernate4.SpringSessionContext "/>
-            <property name="hibernate.dialect" value="org.hibernate.dialect.HSQLDialect"/>
-            <property name="hibernate.hbm2ddl.auto" value="update"/>
-
-            <!-- c3p0 config http://www.hibernate.org/214.html -->
-            <property name="connection.provider_class" value="org.hibernate.service.jdbc.connections.internal.C3P0ConnectionProvider"/>
-            <property name="hibernate.c3p0.acquire_increment" value="1"/>
-            <property name="hibernate.c3p0.idle_test_period" value="60"/>
-            <property name="hibernate.c3p0.min_size" value="1"/>
-            <property name="hibernate.c3p0.max_size" value="2"/>
-            <property name="hibernate.c3p0.max_statements" value="50"/>
-            <property name="hibernate.c3p0.timeout" value="0"/>
-            <property name="hibernate.c3p0.acquireRetryAttempts" value="1"/>
-            <property name="hibernate.c3p0.acquireRetryDelay" value="250"/>
-        </properties>
     </persistence-unit>
 </persistence>

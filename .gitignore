@@ -3,3 +3,4 @@
 .codenvy
 .idea
 target
+/src/main/resources/config/application-production.properties

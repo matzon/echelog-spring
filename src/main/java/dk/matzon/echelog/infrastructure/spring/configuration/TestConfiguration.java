@@ -32,13 +32,13 @@ import dk.matzon.echelog.domain.model.NetworkRepository;
 import dk.matzon.echelog.infrastructure.hibernate.HibernateChannelRepository;
 import dk.matzon.echelog.infrastructure.hibernate.HibernateEntryRepository;
 import dk.matzon.echelog.infrastructure.hibernate.HibernateNetworkRepository;
-import org.hibernate.jpa.HibernatePersistenceProvider;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.springframework.orm.hibernate4.HibernateTransactionManager;
-import org.springframework.orm.jpa.LocalEntityManagerFactoryBean;
-import org.springframework.orm.jpa.vendor.HibernateJpaSessionFactoryBean;
+
+import javax.persistence.EntityManagerFactory;
 
 /**
  * @author Brian Matzon <brian@matzon.dk>
@@ -47,6 +47,9 @@ import org.springframework.orm.jpa.vendor.HibernateJpaSessionFactoryBean;
 @Profile({"default", "integrationtest"})
 public class TestConfiguration {
 
+    @Autowired
+    EntityManagerFactory entityManagerFactory;
+
     @Bean
     public Echelog echelog() {
         return new Echelog(networkRepository(), channelRepository(), entryRepository());
@@ -54,36 +57,21 @@ public class TestConfiguration {
 
     @Bean
     public ChannelRepository channelRepository() {
-        return new HibernateChannelRepository(sessionFactory().getObject());
+        return new HibernateChannelRepository(sessionFactory());
     }
 
     @Bean
     public NetworkRepository networkRepository() {
-        return new HibernateNetworkRepository(sessionFactory().getObject());
+        return new HibernateNetworkRepository(sessionFactory());
     }
 
     @Bean
     public EntryRepository entryRepository() {
-        return new HibernateEntryRepository(sessionFactory().getObject());
+        return new HibernateEntryRepository(sessionFactory());
     }
 
     @Bean
-    public LocalEntityManagerFactoryBean entityManagerFactory() {
-        LocalEntityManagerFactoryBean factoryBean = new LocalEntityManagerFactoryBean();
-        factoryBean.setPersistenceProvider(new HibernatePersistenceProvider());
-        factoryBean.setPersistenceUnitName("echelog");
-        return factoryBean;
-    }
-
-    @Bean
-    public HibernateTransactionManager transactionManager() {
-        HibernateTransactionManager transactionManager = new HibernateTransactionManager();
-        transactionManager.setSessionFactory(sessionFactory().getObject());
-        return transactionManager;
-    }
-
-    @Bean
-    public HibernateJpaSessionFactoryBean sessionFactory() {
-        return new HibernateJpaSessionFactoryBean();
+    public SessionFactory sessionFactory() {
+        return entityManagerFactory.unwrap(SessionFactory.class);
     }
 }

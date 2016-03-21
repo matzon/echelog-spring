@@ -29,9 +29,16 @@ import dk.matzon.echelog.application.Echelog;
 import dk.matzon.echelog.domain.model.ChannelRepository;
 import dk.matzon.echelog.domain.model.EntryRepository;
 import dk.matzon.echelog.domain.model.NetworkRepository;
+import dk.matzon.echelog.infrastructure.hibernate.HibernateChannelRepository;
+import dk.matzon.echelog.infrastructure.hibernate.HibernateEntryRepository;
+import dk.matzon.echelog.infrastructure.hibernate.HibernateNetworkRepository;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+
+import javax.persistence.EntityManagerFactory;
 
 /**
  * @author Brian Matzon <brian@matzon.dk>
@@ -40,6 +47,9 @@ import org.springframework.context.annotation.Profile;
 @Profile("production")
 public class ProductionConfiguration {
 
+    @Autowired
+    EntityManagerFactory entityManagerFactory;
+
     @Bean
     public Echelog echelog() {
         return new Echelog(networkRepository(), channelRepository(), entryRepository());
@@ -47,17 +57,22 @@ public class ProductionConfiguration {
 
     @Bean
     public ChannelRepository channelRepository() {
-        return null;
+        return new HibernateChannelRepository(sessionFactory());
     }
 
     @Bean
     public NetworkRepository networkRepository() {
-        return null;
+        return new HibernateNetworkRepository(sessionFactory());
     }
 
     @Bean
     public EntryRepository entryRepository() {
-        return null;
+        return new HibernateEntryRepository(sessionFactory());
+    }
+
+    @Bean
+    public SessionFactory sessionFactory() {
+        return entityManagerFactory.unwrap(SessionFactory.class);
     }
 
 }
