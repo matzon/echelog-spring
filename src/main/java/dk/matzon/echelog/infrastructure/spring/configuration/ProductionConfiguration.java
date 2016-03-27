@@ -26,9 +26,11 @@
 package dk.matzon.echelog.infrastructure.spring.configuration;
 
 import dk.matzon.echelog.application.Echelog;
+import dk.matzon.echelog.domain.model.ApiKeyRepository;
 import dk.matzon.echelog.domain.model.ChannelRepository;
 import dk.matzon.echelog.domain.model.EntryRepository;
 import dk.matzon.echelog.domain.model.NetworkRepository;
+import dk.matzon.echelog.infrastructure.hibernate.HibernateApiKeyRepository;
 import dk.matzon.echelog.infrastructure.hibernate.HibernateChannelRepository;
 import dk.matzon.echelog.infrastructure.hibernate.HibernateEntryRepository;
 import dk.matzon.echelog.infrastructure.hibernate.HibernateNetworkRepository;
@@ -73,6 +75,11 @@ public class ProductionConfiguration {
     @Bean
     public SessionFactory sessionFactory() {
         return entityManagerFactory.unwrap(SessionFactory.class);
+    }
+
+    @Bean
+    public ApiKeyRepository apiKeyRepository() {
+        return new HibernateApiKeyRepository(sessionFactory());
     }
 
 }

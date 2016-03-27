@@ -23,19 +23,15 @@
  *
  */
 
-package dk.matzon.echelog.infrastructure.spring;
+package dk.matzon.echelog.domain.model;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ComponentScan;
-
-@SpringBootApplication
-@ComponentScan({
-        "dk.matzon.echelog.infrastructure.spring.configuration",
-        "dk.matzon.echelog.infrastructure.spring.auth",
-        "dk.matzon.echelog.interfaces.rest"})
-public class SpringBoot {
-    public static void main(String[] args) {
-        SpringApplication.run(SpringBoot.class, args);
-    }
+/**
+ * Repository for api keys
+ *
+ * @author Brian Matzon <brian@matzon.dk>
+ */
+public interface ApiKeyRepository {
+    ApiKey findByKey(String _apiKey);
+    ApiKey findByUsernameAndPassword(String _username, String _password);
+    ApiKey save(ApiKey _apiKey);
 }

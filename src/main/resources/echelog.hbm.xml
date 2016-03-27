@@ -55,4 +55,14 @@
         <property name="type" column="type" type="string" length="16"/>
     </class>
 
+    <class name="dk.matzon.echelog.domain.model.ApiKey" table="TBLAPIKEYS">
+        <id name="id" type="long" column="id">
+            <generator class="native"/>
+        </id>
+        <property name="key" column="key" type="string" length="16"/>
+        <property name="valid" column="valid" type="boolean"/>
+        <property name="user" column="user" type="string" length="64"/>
+        <property name="password" column="password" type="string" length="256"/>
+    </class>
+
 </hibernate-mapping>
